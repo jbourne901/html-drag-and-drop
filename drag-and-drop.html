@@ -4,16 +4,28 @@
    * {
      margin: 0;
    }
+
+   .noselect {
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 </style>
 </head>
-<body style="background-color: lightBlue; cursor: pointer">
+<body style="background-color: lightBlue">
 <div 	id="root"
 	style="width:100%;height:100%" 
-	onmousemove="mousedown" 
-	onclick="mousedown"
 >
 
-<span id="sp" style="border: 2px solid black; margin: 0; padding: 0; font-size: 50px; position: absolute"> Hello </span>
+<div id="sp" style="cursor: pointer; border: 2px solid darkblue; margin: 0; padding: 0; font-size: 50px; position: absolute" class="noselect">
+	<span class="noselect">Hello</span> 
+        <span class="noselect">world</span> 
+        <span class="noselect">of drag</span> 
+</div>
 
 </div>
 
@@ -21,24 +33,29 @@
   var clicked=false;
   var xx;
   var yy;
-  document.getElementById("root").addEventListener("click", (e) => setClicked(e));
+  document.getElementById("sp").addEventListener("mousedown", (e) => setClicked(e));
   document.getElementById("root").addEventListener("mousemove", (e) => mousemove(e));
   const sp = document.getElementById("sp");
 
   function setClicked(e) {
+    //e.preventDefault();
     console.log(`clicked pageX = ${e.pageX} pageY=${e.pageY} offsetLeft = ${e.target.offsetLeft} offsetTop = ${e.target.offsetTop}`)
-    xx = e.pageX-e.target.offsetLeft;
-    yy = e.pageY-e.target.offsetTop;
+    const el = document.getElementById("sp");
+    const offLeft = el.offsetLeft;
+    const offTop = el.offsetTop;
+    xx = e.pageX-offLeft;
+    yy = e.pageY-offTop;
     clicked=!clicked;
   }
 
   function mousemove(e) {
-    console.log(e.clientX, e.clientY);
     if(clicked) {
+	console.log(e.clientX, e.clientY);
     	sp.style.left = e.clientX-xx;
     	sp.style.top = e.clientY-yy;
     }
   }
+ 
 </script>
 
 </body>
